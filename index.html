@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Побег от kot_lgromanchik2610 3D — [BETA]</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:wght@400;600;800&display=swap');
+
+    :root {
+      --bg-color: #0d0e15;
+      --card-bg: #161824;
+      --accent: #ff4757;
+      --accent-hover: #ff6b81;
+      --text-main: #ffffff;
+      --text-muted: #a4b0be;
+      --border-color: #2f3542;
+      --header-grad-1: #161824;
+      --header-grad-2: #2a1b40;
+    }
+
+    /* Хоррор-тема */
+    body.horror-theme {
+      --bg-color: #080202;
+      --card-bg: #140505;
+      --accent: #ff0000;
+      --accent-hover: #ff3333;
+      --border-color: #4a0d0d;
+      --header-grad-1: #140505;
+      --header-grad-2: #380404;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Rubik', sans-serif;
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 40px;
+    }
+
+    /* ЭКРАН ЗАГРУЗКИ (Splash Screen) */
+    #loader-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-color);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    #loader-screen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-logo {
+      width: 100px;
+      height: 100px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 3px solid var(--accent);
+      box-shadow: 0 0 25px var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .loader-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .loader-text {
+      color: var(--text-main);
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      letter-spacing: 0.5px;
+    }
+
+    .loader-bar-container {
+      width: 180px;
+      height: 6px;
+      background: #1f2232;
+      border-radius: 3px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .loader-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #ff4757, #ffa502);
+      border-radius: 3px;
+      animation: progressAnim 1.2s ease forwards;
+    }
+
+    @keyframes progressAnim {
+      0% { width: 0%; }
+      50% { width: 70%; }
+      100% { width: 100%; }
+    }
+
+    /* Шапка сайта */
+    header {
+      background: linear-gradient(135deg, var(--header-grad-1), var(--header-grad-2));
+      padding: 16px 15px;
+      border-bottom: 3px solid var(--accent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+    }
+
+    .brand-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1.5px solid #00d2d3;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .header-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .brand-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .logo {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.72rem;
+      color: #00d2d3;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 0px #000;
+      line-height: 1.2;
+    }
+
+    .beta-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 2px 0;
+      margin-top: 2px;
+      transition: color 0.2s;
+    }
+
+    .beta-trigger:hover {
+      color: #ffffff;
+    }
+
+    .q-circle {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      border: 1.5px solid currentColor;
+      font-size: 0.65rem;
+      font-weight: 800;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .theme-toggle-btn {
+      background: #2f3542;
+      color: white;
+      border: 1px solid var(--border-color);
+      font-size: 0.65rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--accent);
+    }
+
+    .beta-tag {
+      background-color: var(--accent);
+      color: white;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.55rem;
+      padding: 6px 8px;
+      border-radius: 6px;
+    }
+
+    /* Главный контейнер */
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 20px 15px;
+    }
+
+    /* Главный блок (Hero) */
+    .hero {
+      text-align: center;
+      padding: 35px 15px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      margin-top: 20px;
+      border: 2px solid var(--border-color);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .hero h1 {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      margin-bottom: 15px;
+      color: #ff9ff3;
+      text-shadow: 2px 2px 0px #000;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 25px;
+    }
+
+    .avatar-box {
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 20px;
+      background: linear-gradient(45deg, #ff4757, #54a0ff);
+      border-radius: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 4px solid #fff;
+      box-shadow: 0 0 25px rgba(255, 71, 87, 0.5);
+      overflow: hidden;
+      padding: 0;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .avatar-box:hover {
+      transform: scale(1.03);
+    }
+
+    .avatar-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Меню с кнопками */
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-main {
+      display: inline-block;
+      background-color: var(--accent);
+      color: white;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.7rem;
+      padding: 14px 20px;
+      text-decoration: none;
+      border-radius: 12px;
+      transition: all 0.2s;
+      box-shadow: 0 6px 0px #b2bec3;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-main:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0px #b2bec3;
+    }
+
+    .btn-secondary {
+      background-color: #2f3542;
+      box-shadow: 0 6px 0px #1e222b;
+    }
+
+    .btn-share {
+      background-color: #00d2d3;
+      color: #0d0e15;
+      box-shadow: 0 6px 0px #019091;
+    }
+
+    /* Секции с контентом */
+    .section {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 25px;
+      margin-top: 20px;
+      border: 2px solid var(--border-color);
+    }
+
+    .section h2 {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.85rem;
+      margin-bottom: 15px;
+      color: #54a0ff;
+      line-height: 1.4;
+    }
+
+    .section p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+    }
+
+    /* Фрейм будущих обновий */
+    .update-frame {
+      background: linear-gradient(145deg, #161824, #1e162b);
+      border: 2px solid #00d2d3;
+      box-shadow: 0 0 20px rgba(0, 210, 211, 0.15);
+      position: relative;
+    }
+
+    .update-badge {
+      display: inline-block;
+      background: #00d2d3;
+      color: #0d0e15;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.55rem;
+      padding: 5px 10px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .feature-item {
+      background: #0d0e15;
+      border: 1px solid var(--border-color);
+      border-left: 4px solid #00d2d3;
+      padding: 12px 14px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .feature-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .feature-text h4 {
+      font-size: 0.9rem;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .feature-text p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .diff-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .diff-tag {
+      font-size: 0.68rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    .diff-easy { background: rgba(46, 213, 115, 0.2); color: #2ed573; border: 1px solid #2ed573; }
+    .diff-norm { background: rgba(255, 165, 2, 0.2); color: #ffa502; border: 1px solid #ffa502; }
+    .diff-hard { background: rgba(255, 71, 87, 0.2); color: #ff4757; border: 1px solid #ff4757; }
+    .diff-ext { background: rgba(165, 94, 234, 0.2); color: #a55eea; border: 1px solid #a55eea; }
+
+    /* Список версий */
+    .versions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .version-card {
+      background: #0d0e15;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 15px;
+    }
+
+    .version-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .version-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .version-badge-old {
+      background: #718093;
+      color: #fff;
+      font-size: 0.6rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Press Start 2P', cursive;
+    }
+
+    .version-badge-current {
+      background: #2ed573;
+      color: #0d0e15;
+      font-size: 0.6rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Press Start 2P', cursive;
+    }
+
+    .version-badge-soon {
+      background: #ffa502;
+      color: #0d0e15;
+      font-size: 0.6rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Press Start 2P', cursive;
+    }
+
+    .version-date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .version-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .version-changelog {
+      margin-top: 8px;
+      padding-left: 16px;
+      font-size: 0.8rem;
+      color: #00d2d3;
+    }
+
+    .version-changelog li {
+      margin-bottom: 4px;
+    }
+
+    /* Сетка скриншотов */
+    .screenshots-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .screenshot-card {
+      background: #0d0e15;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .screenshot-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .screenshot-card .shot-title {
+      padding: 12px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* Блок отзывов */
+    .reviews-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .review-card {
+      background: #0d0e15;
+      border: 1px solid var(--border-color);
+      padding: 14px 16px;
+      border-radius: 12px;
+    }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .review-author {
+      font-size: 0.88rem;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .review-stars {
+      color: #f1c40f;
+      font-size: 0.8rem;
+    }
+
+    .review-card p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    /* Блоки авторов */
+    .authors-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .author-card {
+      background: #0d0e15;
+      border: 1px solid var(--border-color);
+      padding: 14px 16px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .author-icon {
+      font-size: 24px;
+      width: 40px;
+      height: 40px;
+      background: #1f2232;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      flex-shrink: 0;
+      padding: 0;
+    }
+
+    .author-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .author-info h4 {
+      font-size: 0.92rem;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .author-info p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    /* МОДАЛЬНЫЕ ОКНА */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(13, 14, 21, 0.88);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 15px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 550px;
+      border-radius: 20px;
+      border: 2px solid var(--accent);
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(255, 71, 87, 0.3);
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal.active .modal-content {
+      transform: translateY(0);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #2f3542;
+      color: white;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background 0.2s;
+    }
+
+    .close-btn:hover {
+      background: var(--accent);
+    }
+
+    .modal-title {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.85rem;
+      color: #ff9ff3;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .beta-modal-box {
+      background: #1c1e2b;
+      border: 1px solid #3c4257;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      max-width: 440px;
+      padding: 28px 22px;
+    }
+
+    .beta-modal-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #ffd369;
+      margin-bottom: 18px;
+      line-height: 1.3;
+      padding: 0 20px;
+    }
+
+    .beta-bullets {
+      text-align: left;
+      padding-left: 20px;
+      margin-bottom: 24px;
+      color: #d1d8e0;
+      font-size: 0.92rem;
+    }
+
+    .beta-bullets li {
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .btn-beta-support {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, #f6d365, #fda085);
+      color: #161824;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: transform 0.15s, opacity 0.2s;
+    }
+
+    .btn-beta-support:active {
+      transform: scale(0.98);
+    }
+
+    /* Селектор выбора версии в модалке */
+    .version-selector-container {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .version-selector-container label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .version-select {
+      width: 100%;
+      background: #0d0e15;
+      color: #fff;
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-family: 'Rubik', sans-serif;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Переключатель устройств (ПК / Телефон) */
+    .device-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .device-tab {
+      flex: 1;
+      background: #0d0e15;
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      padding: 9px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .device-tab.active-tab {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Контейнеры блоков платформ внутри версии */
+    .platform-box {
+      display: none;
+      text-align: left;
+    }
+
+    .platform-box.active-platform {
+      display: block;
+    }
+
+    /* Контейнеры блоков версий внутри модалки */
+    .version-download-box {
+      display: none;
+      text-align: left;
+    }
+
+    .version-download-box.active-version {
+      display: block;
+    }
+
+    /* Карточки платформ */
+    .download-card {
+      background: #0d0e15;
+      border: 1px solid var(--border-color);
+      padding: 14px 16px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .platform-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .platform-icon {
+      font-size: 26px;
+      width: 42px;
+      height: 42px;
+      background: #1f2232;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .download-info h4 {
+      font-size: 0.92rem;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .download-info p {
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .dl-buttons-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn-dl {
+      background-color: #2ed573;
+      color: #fff;
+      padding: 8px 12px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: background 0.2s;
+      white-space: nowrap;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-dl:hover {
+      background-color: #26af5f;
+    }
+
+    .btn-soon {
+      background-color: #2f3542;
+      color: var(--text-muted);
+      cursor: not-allowed;
+    }
+
+    .btn-soon:hover {
+      background-color: #2f3542;
+    }
+
+    /* Инфо-окно */
+    .error-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(13, 14, 21, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .error-popup.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .error-content {
+      background: #161824;
+      border: 2px solid #54a0ff;
+      padding: 30px 20px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 15px 40px rgba(84, 160, 255, 0.2);
+    }
+
+    .error-content h3 {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.85rem;
+      color: #54a0ff;
+      margin-bottom: 15px;
+    }
+
+    .error-content p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .btn-error-close {
+      background-color: #54a0ff;
+      color: #0d0e15;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.7rem;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* Уведомление о копировании */
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #00d2d3;
+      color: #0d0e15;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+      transition: transform 0.3s ease;
+      z-index: 3000;
+    }
+
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Инструкция */
+    .instruction-body {
+      text-align: left;
+      overflow-y: auto;
+      padding-right: 5px;
+      max-height: 65vh;
+    }
+
+    .instruction-body h3 {
+      font-size: 0.92rem;
+      color: #54a0ff;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    .instruction-body p, .instruction-body li {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .instruction-body ul {
+      padding-left: 18px;
+      list-style-type: disc;
+    }
+
+    .safe-box {
+      background: rgba(46, 213, 115, 0.1);
+      border: 1px dashed #2ed573;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+      color: #2ed573;
+      font-size: 0.82rem;
+    }
+
+    /* Подвал */
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ЭКРАН ЗАГРУЗКИ -->
+  <div id="loader-screen">
+    <div class="loader-logo">
+      <img src="https://i.postimg.cc/1tGGV7Br/1000056877-(1).png" alt="Logo">
+    </div>
+    <div class="loader-text">Загружаем игру...</div>
+    <div class="loader-bar-container">
+      <div class="loader-bar"></div>
+    </div>
+  </div>
+
+  <!-- Уведомление (Toast) -->
+  <div id="toast">Ссылка скопирована в буфер обмена!</div>
+
+  <!-- Шапка сайта -->
+  <header>
+    <div class="brand-block">
+      <div class="header-avatar" id="easter-egg-mini">
+        <img src="https://i.postimg.cc/1tGGV7Br/1000056877-(1).png" alt="Icon">
+      </div>
+      <div class="brand-info">
+        <div class="logo">KOT_LGROMANCHIK</div>
+        <button class="beta-trigger" id="open-beta-info-btn">
+          beta <span class="q-circle">?</span>
+        </button>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="theme-toggle-btn" id="theme-toggle-btn">🩸 Хоррор</button>
+      <div class="beta-tag">3D v1.2</div>
+    </div>
+  </header>
+
+  <div class="container">
+    
+    <!-- Главный баннер -->
+    <div class="hero">
+      <div class="avatar-box" id="easter-egg-main">
+        <img src="https://i.postimg.cc/1tGGV7Br/1000056877-(1).png" alt="kot_lgromanchik2610">
+      </div>
+      <h1>ПОБЕГ ОТ KOT_LGROMANCHIK2610 3D</h1>
+      <p>Добро пожаловать в раннюю Бета-версию! Теперь доступен и Android!</p>
+      
+      <!-- Меню с кнопками -->
+      <div class="hero-buttons">
+        <button class="btn-main" id="open-download-btn">СКАЧАТЬ БЕТУ</button>
+        <button class="btn-main btn-secondary" id="open-help-btn">КАК ИГРАТЬ</button>
+        <button class="btn-main btn-share" id="share-btn">ПОДЕЛИТЬСЯ</button>
+      </div>
+    </div>
+
+    <!-- Секция: ИСТОРИЯ БЕТА-ВЕРСИЙ -->
+    <div class="section">
+      <h2>ИСТОРИЯ БЕТА-ВЕРСИЙ</h2>
+      <p>Здесь можно посмотреть все вышедшие и будущие сборки игры:</p>
+      
+      <div class="versions-list">
+        <!-- Версия 1.0 (Устаревшая) -->
+        <div class="version-card" style="opacity: 0.75;">
+          <div class="version-header">
+            <div class="version-title">
+              Бэта v1.0 <span class="version-badge-old">УСТАРЕЛА</span>
+            </div>
+            <div class="version-date">Прошедшая</div>
+          </div>
+          <p class="version-desc">Первый публичный релиз. Больше не поддерживается для скачивания.</p>
+        </div>
+
+        <!-- Версия 1.1 (Устаревшая) -->
+        <div class="version-card" style="opacity: 0.75;">
+          <div class="version-header">
+            <div class="version-title">
+              Бэта v1.1 <span class="version-badge-old">УСТАРЕЛА</span>
+            </div>
+            <div class="version-date">Ноябрь 2026</div>
+          </div>
+          <p class="version-desc">Предыдущая версия для ПК. Заменена на актуальную сборку v1.2.</p>
+        </div>
+
+        <!-- Версия 1.2 (Текущая доступная для ПК и Телефона) -->
+        <div class="version-card">
+          <div class="version-header">
+            <div class="version-title">
+              Бэта v1.2 <span class="version-badge-current">НОВЫЙ</span>
+            </div>
+            <div class="version-date">Ноябрь 2026</div>
+          </div>
+          <p class="version-desc">Актуальная версия для ПК и Android! Главные нововведения сборки:</p>
+          <ul class="version-changelog">
+            <li>🚨 Детализированные текстуры Сиреноголового</li>
+            <li>🏆 Встроенная система внутриигровых достижений</li>
+            <li>📱 Долгожданный релиз мобильной APK-версии для Android</li>
+          </ul>
+        </div>
+
+        <!-- Версии 1.3 - 1.5 (В разработке) -->
+        <div class="version-card" style="opacity: 0.85;">
+          <div class="version-header">
+            <div class="version-title">
+              Бэта v1.3 — v1.5 <span class="version-badge-soon">В РАЗРАБОТКЕ</span>
+            </div>
+            <div class="version-date">Скоро</div>
+          </div>
+          <p class="version-desc">Будущие обновления с новыми актами, умным ИИ, режимами сложности и улучшениями.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ФРЕЙМ: ЧТО БУДЕТ В БУДУЩЕМ ОБНОВЛЕНИИ -->
+    <div class="section update-frame">
+      <div class="update-badge">🔥 СКОРО В ОБНОВЛЕНИИ</div>
+      <h2 style="color: #00d2d3;">ЧТО БУДЕТ В БУДУЩЕЙ ОБНОВЕ</h2>
+      <p>Готовим масштабное обновление с кучей нового контента:</p>
+      
+      <div class="features-list">
+        <div class="feature-item">
+          <div class="feature-icon">🎬</div>
+          <div class="feature-text">
+            <h4>Больше 30+ Актов</h4>
+            <p>Огромная сюжетная кампания с новыми комнатами, головоломками и ловушками.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-text">
+            <h4>Режимы сложности</h4>
+            <p>Выбирай свой стиль прохождения от спокойного до настоящего хардкора:</p>
+            <div class="diff-tags">
+              <span class="diff-tag diff-easy">ИЗИ</span>
+              <span class="diff-tag diff-norm">НОРМАЛ</span>
+              <span class="diff-tag diff-hard">ХАРД</span>
+              <span class="diff-tag diff-ext">ЭКСТРИМ</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">👁️</div>
+          <div class="feature-text">
+            <h4>Умный ИИ kot_lgromanchik2610</h4>
+            <p>Кот будет слышать шаги, проверять шкафы и устраивать засады.</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">🗝️</div>
+          <div class="feature-text">
+            <h4>Секретные концовки и пасхалки</h4>
+            <p>Несколько вариантов побега, тайные комнаты и скрытые предметы.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Секция: СКРИНШОТЫ ИЗ ИГРЫ -->
+    <div class="section">
+      <h2>СКРИНШОТЫ ИЗ ИГРЫ</h2>
+      <p>Взгляните на кадры из игрового процесса:</p>
+      
+      <div class="screenshots-grid">
+        <!-- Скриншот 1 -->
+        <div class="screenshot-card">
+          <img src="https://i.postimg.cc/cCh3NZpk/IMG-20261113-223434-874.jpg" alt="Игровой процесс - Спальня">
+          <div class="shot-title">Комната с кроватью и неоном</div>
+        </div>
+
+        <!-- Скриншот 2 -->
+        <div class="screenshot-card">
+          <img src="https://i.postimg.cc/wM2NdHCG/IMG-20261113-223433-939.jpg" alt="Игровой процесс - Игровая зона">
+          <div class="shot-title">Игровая зона с мониторами</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Секция: ОТЗЫВЫ ИГРОКОВ -->
+    <div class="section">
+      <h2>ОТЗЫВЫ ТЕСТЕРОВ</h2>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-author">Мафака Rbx (Соавтор)</span>
+            <span class="review-stars">⭐⭐⭐⭐⭐</span>
+          </div>
+          <p>«Отличный старт проекта! Комнаты и неоновая подсветка выглядят очень атмосферно. Ждём полную версию с актами.»</p>
+        </div>
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-author">Первый Тестер</span>
+            <span class="review-stars">⭐⭐⭐⭐⭐</span>
+          </div>
+          <p>«Бету пощупал, дизайн сайта топ. Желаю удачи в разработке и жду умного кота в обнове!»</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Секция: Авторы игры -->
+    <div class="section">
+      <h2>АВТОРЫ ИГРЫ</h2>
+      <div class="authors-grid">
+        <div class="author-card">
+          <div class="author-icon">👑</div>
+          <div class="author-info">
+            <h4>kot_lgromanchik2610</h4>
+            <p>Главный разработчик / Создатель игры</p>
+          </div>
+        </div>
+        <div class="author-card">
+          <div class="author-icon">
+            <img src="https://i.postimg.cc/8zJbLf80/IMG-20261113-225011-820.jpg" alt="Мафака Rbx">
+          </div>
+          <div class="author-info">
+            <h4>Мафака Rbx</h4>
+            <p>Соавтор / Помощник по проекту</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Секция: О проекте -->
+    <div class="section">
+      <h2>О ПРОЕКТЕ</h2>
+      <p>
+        Официальный сайт 3D игры <b>«Побег от kot_lgromanchik2610»</b>. Следи за выходом новых билдов!
+      </p>
+    </div>
+
+    <footer>
+      &copy; 2026 kot_lgromanchik2610 3D Project. All rights reserved.
+    </footer>
+
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО: ПАСХАЛКА -->
+  <div class="modal" id="easter-egg-modal">
+    <div class="modal-content beta-modal-box" style="border-color: #00d2d3;">
+      <button class="close-btn" id="close-easter-egg">✕</button>
+      <div class="beta-modal-title" style="color: #00d2d3;">🐾 Мяу! Секрет найден!</div>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">
+        Ты кликнул на аватарку главного разработчика <b>kot_lgromanchik2610</b>! Кот следит за каждым твоим шагом в игре... Сможешь ли ты сбежать? 😉
+      </p>
+      <button class="btn-beta-support" id="easter-egg-ok" style="background: #00d2d3; color: #0d0e15;">Продолжить побег</button>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО: БЕТА ВЕРСИЯ -->
+  <div class="modal" id="beta-info-modal">
+    <div class="modal-content beta-modal-box">
+      <button class="close-btn" id="close-beta-info-btn">✕</button>
+      <div class="beta-modal-title">Бета версия нового сайта и игры</div>
+      
+      <ul class="beta-bullets">
+        <li>Нашли баг или есть крутая идея? Напишите нам — вы поможете сделать игру и сайт намного лучше.</li>
+        <li>За полезную помощь добавляем в список тестеров, выдаём бонусы в будущих обновлениях или секретные промокоды.</li>
+        <li>Награда зависит от серьёзности найденной ошибки или пользы вашего предложения.</li>
+      </ul>
+
+      <a href="https://t.me/kot_lgromanchik2610" target="_blank" class="btn-beta-support">Написать в поддержку</a>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО: СКАЧАТЬ С ВЫБОРОМ ВЕРСИЙ И УСТРОЙСТВ -->
+  <div class="modal" id="download-modal">
+    <div class="modal-content">
+      <button class="close-btn" id="close-download-btn">✖</button>
+      <div class="modal-title">📦 Скачать игру</div>
+      
+      <!-- Селектор выбора версии -->
+      <div class="version-selector-container">
+        <label for="version-select-box">Выберите версию игры:</label>
+        <select id="version-select-box" class="version-select">
+          <option value="v10">Бета v1.0 (Устаревшая)</option>
+          <option value="v11">Бета v1.1 (Устаревшая)</option>
+          <option value="v12" selected>Бета v1.2 (НОВЫЙ - Актуальная)</option>
+          <option value="v13">Бета v1.3 (В разработке)</option>
+          <option value="v14">Бета v1.4 (В разработке)</option>
+          <option value="v15">Бета v1.5 (В разработке)</option>
+        </select>
+      </div>
+
+      <!-- Переключатель устройств (ПК / Телефон) -->
+      <div class="version-selector-container" style="margin-bottom: 8px;">
+        <label>Выберите устройство:</label>
+      </div>
+      <div class="device-tabs">
+        <button class="device-tab active-tab" data-device="pc">💻 Компьютер (PC)</button>
+        <button class="device-tab" data-device="phone">📱 Телефон (Android)</button>
+      </div>
+
+      <!-- ВЕРСИЯ 1.0 -->
+      <div id="box-v10" class="version-download-box">
+        <div class="platform-box active-platform" data-plat="pc">
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">Версия v1.0 закрыта:</p>
+          <div class="download-card">
+            <div class="platform-left"><div class="platform-icon">❌</div><div class="download-info"><h4>Windows v1.0</h4><p>Недоступно</p></div></div>
+            <button class="btn-dl btn-soon trigger-soon" data-platform="Бета v1.0 (ПК)">Недоступно</button>
+          </div>
+        </div>
+        <div class="platform-box" data-plat="phone">
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">Версия v1.0 не выпускалась:</p>
+          <div class="download-card">
+            <div class="platform-left"><div class="platform-icon">❌</div><div class="download-info"><h4>Android v1.0</h4><p>Отсутствует</p></div></div>
+            <button class="btn-dl btn-soon trigger-soon" data-platform="Бета v1.0 (Телефон)">Недоступно</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ВЕРСИЯ 1.1 -->
+      <div id="box-v11" class="version-download-box">
+        <div class="platform-box active-platform" data-plat="pc">
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">Версия v1.1 закрыта для скачивания:</p>
+          <div class="download-card">
+            <div class="platform-left"><div class="platform-icon">❌</div><div class="download-info"><h4>Windows v1.1</h4><p>Устарело</p></div></div>
+            <button class="btn-dl btn-soon trigger-soon" data-platform="Бета v1.1 (ПК)">Недоступно</button>
+          </div>
+        </div>
+        <div class="platform-box" data-plat="phone">
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">Версия v1.1 не выпускалась:</p>
+          <div class="download-card">
+            <div class="platform-left"><div class="platform-icon">❌</div><div class="download-info"><h4>Android v1.1</h4><p>Отсутствует</p></div></div>
+            <button class="btn-dl btn-soon trigger-soon" data-platform="Бета v1.1 (Телефон)">Недоступно</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ВЕРСИЯ 1.2 (Актуальная с ПК и Android) -->
+      <div id="box-v12" class="version-download-box active-version">
+        <!-- Блок для ПК -->
+        <div class="platform-box active-platform" data-plat="pc">
+          <p style="font-size: 0.81rem; color: #00d2d3; margin-bottom: 6px; font-weight: 600;">✨ Что нового в v1.2 (ПК):</p>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">Сиреноголовый, достижения и стабильный запуск через 3 файла.</p>
+          
+          <div class="download-card" style="flex-direction: column; align-items: stretch;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+              <div class="platform-icon">💻</div>
+              <div class="download-info">
+                <h4>Windows (v1.2 НОВЫЙ)</h4>
+                <p>Требуется скачать все 3 файла в одну папку!</p>
+              </div>
+            </div>
+            <div class="dl-buttons-group" style="display: flex; gap: 6px; justify-content: space-between;">
+              <a href="https://drive.google.com/file/d/1-jm9BVJvYcsNY5g4pjASh3Go5uEa--EV/view?usp=sharing" target="_blank" class="btn-dl" style="flex: 1; text-align: center;">Game.exe</a>
+              <a href="https://drive.google.com/file/d/1aLf33BepXYMeCBCbNivyUjuEhZ8TI3u6/view?usp=sharing" target="_blank" class="btn-dl" style="flex: 1; text-align: center;">Game.pck</a>
+              <a href="https://drive.google.com/file/d/1Mez1EDEVxl-yptggqLcilXX3K-eJr7hC/view?usp=sharing" target="_blank" class="btn-dl" style="flex: 1; text-align: center;">Console</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Блок для Телефона (Android) -->
+        <div class="platform-box" data-plat="phone">
+          <p style="font-size: 0.81rem; color: #2ed573; margin-bottom: 6px; font-weight: 600;">📱 Android Релиз (v1.2):</p>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">Мобильная версия игры готова! Скачайте APK файл.</p>
+          
+          <div class="download-card">
+            <div class="platform-left">
+              <div class="platform-icon">🤖</div>
+              <div class="download-info">
+                <h4>Android (v1.2 APK)</h4>
+                <p>Готово к скачиванию</p>
+              </div>
+            </div>
+            <a href="https://drive.google.com/file/d/1QaL4vDoNIceOFojXFc9kd0Ndlhz7kVzd/view?usp=drivesdk" target="_blank" class="btn-dl">Скачать APK</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ВЕРСИЯ 1.3 -->
+      <div id="box-v13" class="version-download-box">
+        <div class="platform-box active-platform" data-plat="pc">
+          <div class="download-card"><div class="platform-left"><div class="platform-icon">🚀</div><div class="download-info"><h4>Windows v1.3</h4><p>Скоро</p></div></div><button class="btn-dl btn-soon trigger-soon" data-platform="Бета v1.3 (ПК)">Скоро</button></div>
+        </div>
+        <div class="platform-box" data-plat="phone">
+          <div class="download-card"><div class="platform-left"><div class="platform-icon">📱</div><div class="download-info"><h4>Android v1.3</h4><p>Скоро</p></div></div><button class="btn-dl btn-soon trigger-soon" data-platform="Бета v1.3 (Телефон)">Скоро</button></div>
+        </div>
+      </div>
+
+      <!-- ВЕРСИЯ 1.4 -->
+      <div id="box-v14" class="version-download-box">
+        <div class="platform-box active-platform" data-plat="pc">
+          <div class="download-card"><div class="platform-left"><div class="platform-icon">🚀</div><div class="download-info"><h4>Windows v1.4</h4><p>Скоро</p></div></div><button class="btn-dl btn-soon trigger-soon" data-platform="Бета v1.4 (ПК)">Скоро</button></div>
+        </div>
+        <div class="platform-box" data-plat="phone">
+          <div class="download-card"><div class="platform-left"><div class="platform-icon">📱</div><div class="download-info"><h4>Android v1.4</h4><p>Скоро</p></div></div><button class="btn-dl btn-soon trigger-soon" data-platform="Бета v1.4 (Телефон)">Скоро</button></div>
+        </div>
+      </div>
+
+      <!-- ВЕРСИЯ 1.5 -->
+      <div id="box-v15" class="version-download-box">
+        <div class="platform-box active-platform" data-plat="pc">
+          <div class="download-card"><div class="platform-left"><div class="platform-icon">🚀</div><div class="download-info"><h4>Windows v1.5</h4><p>Скоро</p></div></div><button class="btn-dl btn-soon trigger-soon" data-platform="Бета v1.5 (ПК)">Скоро</button></div>
+        </div>
+        <div class="platform-box" data-plat="phone">
+          <div class="download-card"><div class="platform-left"><div class="platform-icon">📱</div><div class="download-info"><h4>Android v1.5</h4><p>Скоро</p></div></div><button class="btn-dl btn-soon trigger-soon" data-platform="Бета v1.5 (Телефон)">Скоро</button></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО: КАК ИГРАТЬ -->
+  <div class="modal" id="help-modal">
+    <div class="modal-content">
+      <button class="close-btn" id="close-help-btn">✖</button>
+      <div class="modal-title">📖 Как играть и скачивать</div>
+      
+      <div class="instruction-body">
+        <h3>1. Как скачать и установить игру на Android?</h3>
+        <p>1. В окне скачивания выберите вкладку <b>«Телефон (Android)»</b>.</p>
+        <p>2. Нажмите кнопку <b>«Скачать APK»</b> и перейдите по ссылке на Google Диск.</p>
+        <p>3. Скачайте APK-файл на свой телефон.</p>
+        <p>4. Нажмите на скачанный файл в уведомлениях или через файловый менеджер, чтобы запустить установку.</p>
+        <div class="safe-box">
+          ⚠️ <b>Важно:</b> Если телефон выдаст предупреждение о неизвестном источнике, разрешите установку в настройках безопасности (это полностью безопасно).
+        </div>
+
+        <h3>2. Как запустить игру на ПК (v1.2)?</h3>
+        <p>1. Создайте на компьютере новую папку и назовите её <b>Game</b>.</p>
+        <p>2. Скачайте в эту папку сразу три файла: <b>Game.exe</b>, <b>Game.pck</b> и <b>Console</b>.</p>
+        <p>3. Для запуска игры открывайте главный файл <b>Game.exe</b>!</p>
+        
+        <div class="safe-box">
+          🛡️ <b>Безопасность:</b> Файлы чистые. Если Windows покажет предупреждение, нажмите «Подробнее» ➔ «Выполнить в любом случае».
+        </div>
+
+        <h3>3. Управление в игре</h3>
+        <ul>
+          <li><b>На телефоне:</b> Используйте виртуальный джойстик и сенсорные зоны на экране.</li>
+          <li><b>На ПК:</b> Используйте клавиши <b>W, A, S, D</b> для перемещения и мышь для обзора.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ОКНО УВЕДОМЛЕНИЯ -->
+  <div class="error-popup" id="error-popup">
+    <div class="error-content">
+      <h3>⏳ ВНИМАНИЕ!</h3>
+      <p id="soon-text">Эта версия пока недоступна для скачивания!</p>
+      <button class="btn-error-close" id="close-error-btn">ПОНЯТНО</button>
+    </div>
+  </div>
+
+  <script>
+    // Генератор звука клика (Web Audio API)
+    function playClickSound() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.05);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+      } catch(e) {}
+    }
+
+    document.querySelectorAll('button, a').forEach(el => {
+      el.addEventListener('click', playClickSound);
+    });
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const loader = document.getElementById('loader-screen');
+        loader.classList.add('fade-out');
+      }, 1000);
+    });
+
+    const betaInfoModal = document.getElementById('beta-info-modal');
+    const downloadModal = document.getElementById('download-modal');
+    const helpModal = document.getElementById('help-modal');
+    const errorPopup = document.getElementById('error-popup');
+    const soonText = document.getElementById('soon-text');
+    const easterEggModal = document.getElementById('easter-egg-modal');
+    const toast = document.getElementById('toast');
+
+    // Переключение версий в окне скачивания
+    const versionSelectBox = document.getElementById('version-select-box');
+    const boxes = {
+      'v10': document.getElementById('box-v10'),
+      'v11': document.getElementById('box-v11'),
+      'v12': document.getElementById('box-v12'),
+      'v13': document.getElementById('box-v13'),
+      'v14': document.getElementById('box-v14'),
+      'v15': document.getElementById('box-v15')
+    };
+
+    versionSelectBox.onchange = (e) => {
+      const selected = e.target.value;
+      for (let key in boxes) {
+        if (key === selected) {
+          boxes[key].classList.add('active-version');
+        } else {
+          boxes[key].classList.remove('active-version');
+        }
+      }
+    };
+
+    // Переключение устройств (ПК / Телефон) в модалке
+    const deviceTabs = document.querySelectorAll('.device-tab');
+    deviceTabs.forEach(tab => {
+      tab.onclick = () => {
+        deviceTabs.forEach(t => t.classList.remove('active-tab'));
+        tab.classList.add('active-tab');
+        const selectedDevice = tab.getAttribute('data-device');
+
+        document.querySelectorAll('.version-download-box.active-version .platform-box').forEach(box => {
+          if (box.getAttribute('data-plat') === selectedDevice) {
+            box.classList.add('active-platform');
+          } else {
+            box.classList.remove('active-platform');
+          }
+        });
+      };
+    });
+
+    versionSelectBox.addEventListener('change', () => {
+      const activeDevice = document.querySelector('.device-tab.active-tab').getAttribute('data-device');
+      document.querySelectorAll('.version-download-box.active-version .platform-box').forEach(box => {
+        if (box.getAttribute('data-plat') === activeDevice) {
+          box.classList.add('active-platform');
+        } else {
+          box.classList.remove('active-platform');
+        }
+      });
+    });
+
+    // Переключение тем (Неон / Хоррор)
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    themeToggleBtn.onclick = () => {
+      document.body.classList.toggle('horror-theme');
+      if (document.body.classList.contains('horror-theme')) {
+        themeToggleBtn.textContent = '🌙 Неон';
+      } else {
+        themeToggleBtn.textContent = '🩸 Хоррор';
+      }
+    };
+
+    const triggerEasterEgg = () => easterEggModal.classList.add('active');
+    document.getElementById('easter-egg-main').onclick = triggerEasterEgg;
+    document.getElementById('easter-egg-mini').onclick = triggerEasterEgg;
+    document.getElementById('close-easter-egg').onclick = () => easterEggModal.classList.remove('active');
+    document.getElementById('easter-egg-ok').onclick = () => easterEggModal.classList.remove('active');
+
+    document.getElementById('share-btn').onclick = () => {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Побег от kot_lgromanchik2610 3D',
+          text: 'Сыграй в крутую 3D бету на ПК и телефоне!',
+          url: window.location.href,
+        }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(window.location.href);
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      }
+    };
+
+    document.getElementById('open-beta-info-btn').onclick = () => betaInfoModal.classList.add('active');
+    document.getElementById('close-beta-info-btn').onclick = () => betaInfoModal.classList.remove('active');
+
+    document.getElementById('open-download-btn').onclick = () => downloadModal.classList.add('active');
+    document.getElementById('open-help-btn').onclick = () => helpModal.classList.add('active');
+
+    document.getElementById('close-download-btn').onclick = () => downloadModal.classList.remove('active');
+    document.getElementById('close-help-btn').onclick = () => helpModal.classList.remove('active');
+
+    const soonButtons = document.querySelectorAll('.trigger-soon');
+    soonButtons.forEach(btn => {
+      btn.onclick = () => {
+        const plat = btn.getAttribute('data-platform');
+        if (plat.includes('Устаревшая') || plat.includes('v1.0') || plat.includes('v1.1')) {
+          soonText.textContent = `Эта старая версия больше не поддерживается и недоступна для скачивания!`;
+        } else {
+          soonText.textContent = `${plat} находится в разработке и скоро появится!`;
+        }
+        downloadModal.classList.remove('active');
+        errorPopup.classList.add('active');
+      };
+    });
+
+    document.getElementById('close-error-btn').onclick = () => {
+      errorPopup.classList.remove('active');
+    };
+
+    window.onclick = (e) => {
+      if (e.target === easterEggModal) easterEggModal.classList.remove('active');
+      if (e.target === betaInfoModal) betaInfoModal.classList.remove('active');
+      if (e.target === downloadModal) downloadModal.classList.remove('active');
+      if (e.target === helpModal) helpModal.classList.remove('active');
+      if (e.target === errorPopup) errorPopup.classList.remove('active');
+    };
+  </script>
+
+</body>
+</html>
